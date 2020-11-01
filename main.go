@@ -11,13 +11,14 @@ func main() {
 	database.InitDatabase()
 	handler.InitSession()
 	r := RegisterHandlers()
-	http.ListenAndServe(":8084", handler.SessionManager.LoadAndSave(r))
+	http.ListenAndServeTLS(":21005", "./data/tls/full_chain.pem", "./data/tls/private.key", handler.SessionManager.LoadAndSave(r))
 }
 
 func RegisterHandlers() *httprouter.Router {
 	router := httprouter.New()
-	router.GET("/user/register", handler.Register)
-	router.GET("/user/login", handler.Login)
+	router.POST("/user/register", handler.Register)
+	router.POST("/user/login", handler.Login)
+	router.GET("/user/getavatar/:uid", handler.GetAvatar)
 	//router.GET("/user/logged", handler.Logged)
 
 	return router

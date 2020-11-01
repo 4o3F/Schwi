@@ -1,14 +1,19 @@
 package handler
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/CardinalDevLab/Schwi-Backend/database"
 	"github.com/CardinalDevLab/Schwi-Backend/def"
 	"github.com/CardinalDevLab/Schwi-Backend/utils"
 	"github.com/julienschmidt/httprouter"
+	image2 "image"
+	"image/jpeg"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 func Register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
@@ -55,6 +60,28 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		responseStr, _ := json.Marshal(def.User{Uid: uid, Name: name, Email: email, Experience: experience})
 		io.WriteString(w, string(responseStr))
 		SessionManager.Put(r.Context(), string(uid), name)
+	}
+}
+
+func GetAvatar(w http.ResponseWriter, r *http.Request, p httprouter.Params)  {
+	uid := p.ByName("uid")
+	filepath := "./data/avatar/" + uid + ".jpg"
+	if utils.CheckFileExistance(filepath) {
+		reader, _ := os.Open("./data/avatar/" + uid + ".jpg")
+
+		defer reader.Close()
+		image, _, err := image2.Decode(reader)
+		if err != nil {
+			fmt.Println(err)
+		}
+		buffer := new(bytes.Buffer)
+		err = jpeg.Encode(buffer, image, nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+		w.Write(buffer.Bytes())
+	} else {
+		sendMsg(w, 404, "Not Found")
 	}
 }
 
