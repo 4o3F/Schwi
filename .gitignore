@@ -85,3 +85,7 @@ target
 env/
 
 *.db
+
+dev/
+
+Schwi-Backend
