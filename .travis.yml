@@ -1,0 +1,9 @@
+language: go
+sudo: required
+
+go:
+- 1.15.2
+
+script:
+- apt-get install musl-gcc
+- CGO_ENABLED=1 CC=musl-gcc go build --ldflags '-linkmode external -extldflags "-static"' main.go
