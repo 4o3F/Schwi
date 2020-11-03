@@ -5,5 +5,6 @@ go:
 - 1.15.2
 
 script:
-- sudo apt-get install musl-gcc
+- sudo apt-get install musl-tools
+- sudo apt-get install musl-tool
 - CGO_ENABLED=1 CC=musl-gcc go build --ldflags '-linkmode external -extldflags "-static"' main.go
