@@ -49,17 +49,20 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	response, err := database.GetUser(0, body.Email)
 	password := utils.PasswordCrypto(body.Password)
 
-	if err != nil || len(response.Password) == 0 || password != response.Password {
+	if err != nil || response == nil || len(response.Password) == 0 || password != response.Password {
 		sendMsg(w, 401, "login detail error")
 		return
 	} else {
 		name := response.Name
 		uid := response.Uid
-		experience := response.Uid
+		experience := response.Experience
 		email := response.Email
 		responseStr, _ := json.Marshal(def.User{Uid: uid, Name: name, Email: email, Experience: experience})
 		io.WriteString(w, string(responseStr))
-		SessionManager.Put(r.Context(), string(uid), name)
+		SessionManager.Put(r.Context(), "uid", string(uid))
+		SessionManager.Put(r.Context(), "name", name)
+		SessionManager.Put(r.Context(), "email", email)
+		SessionManager.Put(r.Context(), "experience", experience)
 	}
 }
 
