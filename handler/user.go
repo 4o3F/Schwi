@@ -7,6 +7,7 @@ import (
 	"github.com/CardinalDevLab/Schwi-Backend/database"
 	"github.com/CardinalDevLab/Schwi-Backend/def"
 	"github.com/CardinalDevLab/Schwi-Backend/utils"
+	"github.com/asarandi/identicon"
 	"github.com/julienschmidt/httprouter"
 	image2 "image"
 	"image/jpeg"
@@ -14,6 +15,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 func Register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
@@ -33,7 +35,13 @@ func Register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		sendMsg(w, 500, "database error")
 		return
 	} else {
-		sendMsg(w, 200, "register success")
+		user, _ := database.GetUser(0, body.Email)
+		err = generateAvatar(user.Uid)
+		if err != nil {
+			sendMsg(w, 500, "avatar generate error")
+		} else {
+			sendMsg(w, 200, "register success")
+		}
 	}
 }
 
@@ -100,3 +108,14 @@ func GetAvatar(w http.ResponseWriter, r *http.Request, p httprouter.Params)  {
 //	logged := SessionManager.GetString(r.Context(), string(body.Uid))
 //	fmt.Println(logged)
 //}
+
+func generateAvatar(uid int) error {
+	md5 := []byte(utils.DoMD5(strconv.Itoa(uid)))
+	filepath := "./data/avatar/" + strconv.Itoa(uid) + ".jpg"
+	err := identicon.File(md5, 8, filepath)
+	if err != nil {
+		panic(err)
+		return err
+	}
+	return nil
+}

@@ -11,8 +11,8 @@ func main() {
 	database.InitDatabase()
 	handler.InitSession()
 	r := RegisterHandlers()
-	http.ListenAndServeTLS(":21005", "./data/tls/full_chain.pem", "./data/tls/private.key", handler.SessionManager.LoadAndSave(r))
-	//http.ListenAndServe(":21005", handler.SessionManager.LoadAndSave(r))
+	//http.ListenAndServeTLS(":21005", "./data/tls/full_chain.pem", "./data/tls/private.key", handler.SessionManager.LoadAndSave(r))
+	http.ListenAndServe(":21005", handler.SessionManager.LoadAndSave(r))
 }
 
 func RegisterHandlers() *httprouter.Router {

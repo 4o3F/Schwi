@@ -2,6 +2,8 @@ github.com/alexedwards/scs/sqlite3store v0.0.0-20200729112010-8c9ddd400378 h1:Vi
 github.com/alexedwards/scs/sqlite3store v0.0.0-20200729112010-8c9ddd400378/go.mod h1:OG/v+xw5B1E0Gn1WSFDatT32fPriQx642ndLJHiAewQ=
 github.com/alexedwards/scs/v2 v2.4.0 h1:XfnMamKnvp1muJVNr1WzikQTclopsBXWZtzz0NBjOK0=
 github.com/alexedwards/scs/v2 v2.4.0/go.mod h1:ToaROZxyKukJKT/xLcVQAChi5k6+Pn1Gvmdl7h3RRj8=
+github.com/asarandi/identicon v0.0.0-20200521084118-85c7ddc78b98 h1:E0LcKyJF4rWwgy4TiN9qh7N8WDq3CXuqlpT3SaPX27M=
+github.com/asarandi/identicon v0.0.0-20200521084118-85c7ddc78b98/go.mod h1:N11wGftFABFQdPQkhHE2Fc0FTwaYMtUIJ0SfNyOb5sU=
 github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
 github.com/mattn/go-sqlite3 v2.0.3+incompatible h1:gXHsfypPkaMZrKbD5209QV9jbUTJKjyR5WD3HYQSd+U=

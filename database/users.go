@@ -7,6 +7,7 @@ import (
 )
 
 func CreateUser(name string, password string, email string, experience int) error {
+	//Insert New User
 	password = utils.PasswordCrypto(password)
 	statement, error := Database.Prepare("INSERT INTO users (name,password,email,experience) VALUES (?,?,?,?)")
 	if error != nil {
@@ -18,6 +19,7 @@ func CreateUser(name string, password string, email string, experience int) erro
 		return error
 	}
 	defer statement.Close()
+
 	return nil
 }
 
