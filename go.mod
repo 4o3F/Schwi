@@ -8,4 +8,5 @@ require (
 	github.com/asarandi/identicon v0.0.0-20200521084118-85c7ddc78b98
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
+	github.com/spf13/viper v1.7.1
 )

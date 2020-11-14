@@ -9,7 +9,7 @@ import (
 func CreateUser(name string, password string, email string, experience int) error {
 	//Insert New User
 	password = utils.PasswordCrypto(password)
-	statement, error := Database.Prepare("INSERT INTO users (name,password,email,experience) VALUES (?,?,?,?)")
+	statement, error := MainDatabase.Prepare("INSERT INTO users (name,password,email,experience) VALUES (?,?,?,?)")
 	if error != nil {
 		return error
 	}
@@ -30,7 +30,7 @@ func GetUser(uid int, email string) (*def.User, error) {
 	} else if email != "" {
 		query += `SELECT uid,name,password,email,experience FROM users WHERE email = ?`
 	}
-	statement, _ := Database.Prepare(query)
+	statement, _ := MainDatabase.Prepare(query)
 	var experience int
 	var password, name string
 	if uid != 0 {

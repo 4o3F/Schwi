@@ -16,15 +16,27 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
+
 func Register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+
+	captcha, _ := utils.NewReCAPTCHA(database.RecaptchaKey, utils.RecaptchaV2, 10 * time.Second)
+
 	req, _ := ioutil.ReadAll(r.Body)
 	body := &def.User{}
+
 	if err := json.Unmarshal(req, body); err != nil {
 		sendMsg(w, 401, "wrong json")
 		return
 	}
+
+	err := captcha.Verify(body.Recaptcha)
+	if err != nil {
+		sendMsg(w, 401, "recaptcha wrong")
+	}
+
 	res, _ := database.GetUser(0, body.Email)
 	if res != nil {
 		sendMsg(w, 401, "email exist")
@@ -74,7 +86,7 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	}
 }
 
-func GetAvatar(w http.ResponseWriter, r *http.Request, p httprouter.Params)  {
+func GetAvatar(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	uid := p.ByName("uid")
 	filepath := "./data/avatar/" + uid + ".jpg"
 	if utils.CheckFileExistance(filepath) {
@@ -110,9 +122,9 @@ func GetAvatar(w http.ResponseWriter, r *http.Request, p httprouter.Params)  {
 //}
 
 func generateAvatar(uid int) error {
-	md5 := []byte(utils.DoMD5(strconv.Itoa(uid)))
+	//md5 := []byte(utils.DoMD5(strconv.Itoa(uid)))
 	filepath := "./data/avatar/" + strconv.Itoa(uid) + ".jpg"
-	err := identicon.File(md5, 8, filepath)
+	err := identicon.File([]byte(strconv.Itoa(uid)), 8, filepath)
 	if err != nil {
 		panic(err)
 		return err

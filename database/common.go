@@ -8,12 +8,12 @@ import (
 )
 
 var (
-	Database *sql.DB
+	MainDatabase *sql.DB
 	err      error
 )
 
 func InitDatabase() {
-	Database, err = sql.Open("sqlite3", "./database.db")
+	MainDatabase, err = sql.Open("sqlite3", "./database.db")
 	utils.CheckErr(err)
 	fmt.Println("Init Database")
 }

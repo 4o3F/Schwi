@@ -7,8 +7,11 @@ import (
 	"net/http"
 )
 
+
+
 func main() {
 	database.InitDatabase()
+	database.LoadConfig()
 	handler.InitSession()
 	r := RegisterHandlers()
 	//http.ListenAndServeTLS(":21005", "./data/tls/full_chain.pem", "./data/tls/private.key", handler.SessionManager.LoadAndSave(r))
