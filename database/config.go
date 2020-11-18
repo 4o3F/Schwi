@@ -8,6 +8,10 @@ import (
 
 var (
 	RecaptchaKey string
+	FrontendDomain string
+	CORSDomain []string
+	UseTLS bool
+	CookieDomain string
 )
 
 func LoadConfig()  {
@@ -19,6 +23,10 @@ func LoadConfig()  {
 		os.Exit(1)
 	}
 	RecaptchaKey = viper.GetString("recaptchakey")
+	FrontendDomain = viper.GetString("frontenddomain")
+	CORSDomain = viper.GetStringSlice("corsdomain")
+	UseTLS = viper.GetBool("usetls")
+	CookieDomain = viper.GetString("cookiedomain")
 
 	fmt.Println("Init Config")
 }

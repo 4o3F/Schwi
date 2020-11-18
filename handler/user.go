@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"github.com/CardinalDevLab/Schwi-Backend/database"
@@ -11,7 +12,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 	image2 "image"
 	"image/jpeg"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -77,8 +77,18 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		uid := response.Uid
 		experience := response.Experience
 		email := response.Email
-		responseStr, _ := json.Marshal(def.User{Uid: uid, Name: name, Email: email, Experience: experience})
-		io.WriteString(w, string(responseStr))
+		responseJson, _ := json.Marshal(def.User{Uid: uid, Name: name, Email: email, Experience: experience})
+		responseCookie := http.Cookie{Name: "userinfo",
+			Value: base64.StdEncoding.EncodeToString(responseJson),
+			Path: "/",
+			MaxAge: 86400,
+			Domain: database.CookieDomain,
+			SameSite: http.SameSiteNoneMode,
+			Secure: true,
+		}
+		//io.WriteString(w, string(responseStr))
+		http.SetCookie(w, &responseCookie)
+		sendMsg(w, 200, "success")
 		SessionManager.Put(r.Context(), "uid", string(uid))
 		SessionManager.Put(r.Context(), "name", name)
 		SessionManager.Put(r.Context(), "email", email)
