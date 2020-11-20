@@ -35,6 +35,7 @@ func Register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	err := captcha.Verify(body.Recaptcha)
 	if err != nil {
 		sendMsg(w, 401, "recaptcha wrong")
+		return
 	}
 
 	res, _ := database.GetUser(0, body.Email)
