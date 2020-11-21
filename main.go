@@ -24,6 +24,7 @@ func main() {
 
 func RegisterHandlers() http.Handler {
 	router := httprouter.New()
+	router.GET("/apistatus", handler.ApiStatus)
 	router.POST("/user/register", handler.Register)
 	router.POST("/user/login", handler.Login)
 	router.GET("/user/getavatar/:uid", handler.GetAvatar)
