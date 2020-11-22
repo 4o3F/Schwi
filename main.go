@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/CardinalDevLab/Schwi-Backend/database"
 	"github.com/CardinalDevLab/Schwi-Backend/handler"
+	"github.com/CardinalDevLab/Schwi-Backend/log"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 func main() {
 	database.InitDatabase()
 	database.LoadConfig()
+	log.SentryInit()
 	handler.InitSession()
 	h := RegisterHandlers()
 	if database.UseTLS {

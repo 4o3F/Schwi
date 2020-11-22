@@ -44,7 +44,7 @@ func Register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		return
 	}
 
-	if err := database.CreateUser(body.Name, body.Password, body.Email, 0); err != nil {
+	if err := database.CreateUser(body.Username, body.Password, body.Email, 0); err != nil {
 		sendMsg(w, 500, "database error")
 		return
 	} else {
@@ -74,11 +74,11 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		sendMsg(w, 401, "login detail error")
 		return
 	} else {
-		name := response.Name
+		username := response.Username
 		uid := response.Uid
 		experience := response.Experience
 		email := response.Email
-		responseJson, _ := json.Marshal(def.User{Uid: uid, Name: name, Email: email, Experience: experience})
+		responseJson, _ := json.Marshal(def.User{Uid: uid, Username: username, Email: email, Experience: experience})
 		responseCookie := http.Cookie{Name: "userinfo",
 			Value: base64.StdEncoding.EncodeToString(responseJson),
 			Path: "/",
@@ -89,9 +89,9 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		}
 		//io.WriteString(w, string(responseStr))
 		http.SetCookie(w, &responseCookie)
-		sendMsg(w, 200, "success")
+		sendMsg(w, 200, "login success")
 		SessionManager.Put(r.Context(), "uid", string(uid))
-		SessionManager.Put(r.Context(), "name", name)
+		SessionManager.Put(r.Context(), "username", username)
 		SessionManager.Put(r.Context(), "email", email)
 		SessionManager.Put(r.Context(), "experience", experience)
 	}
@@ -137,7 +137,7 @@ func generateAvatar(uid int) error {
 	filepath := "./data/avatar/" + strconv.Itoa(uid) + ".jpg"
 	err := identicon.File([]byte(strconv.Itoa(uid)), 8, filepath)
 	if err != nil {
-		panic(err)
+		utils.ErrorHandler(err)
 		return err
 	}
 	return nil

@@ -9,11 +9,16 @@ import (
 
 var (
 	MainDatabase *sql.DB
+	PostDatabase *sql.DB
 	err      error
 )
 
 func InitDatabase() {
-	MainDatabase, err = sql.Open("sqlite3", "./database.db")
-	utils.CheckErr(err)
+	MainDatabase, err = sql.Open("sqlite3", "./data/databse/maindatabase.db")
+	utils.ErrorHandler(err)
+
+	PostDatabase, err = sql.Open("sqlite3", "./data/database/postdatabase.db")
+	utils.ErrorHandler(err)
+
 	fmt.Println("Init Database")
 }

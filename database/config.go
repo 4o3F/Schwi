@@ -12,6 +12,7 @@ var (
 	CORSDomain []string
 	UseTLS bool
 	CookieDomain string
+	SentryDSN string
 )
 
 func LoadConfig()  {
@@ -27,6 +28,7 @@ func LoadConfig()  {
 	CORSDomain = viper.GetStringSlice("corsdomain")
 	UseTLS = viper.GetBool("usetls")
 	CookieDomain = viper.GetString("cookiedomain")
+	SentryDSN = viper.GetString("sentrydsn")
 
 	fmt.Println("Init Config")
 }

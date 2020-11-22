@@ -1,8 +1,10 @@
 package utils
 
-func CheckErr(error error) bool {
-	if error != nil {
-		panic(error)
+import "github.com/getsentry/sentry-go"
+
+func ErrorHandler(err error) bool {
+	if err != nil {
+		sentry.CaptureException(err)
 		return true
 	}
 	return false
