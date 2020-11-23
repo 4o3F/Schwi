@@ -32,11 +32,11 @@ func GetUser(uid int, email string) (*def.User, error) {
 	}
 	statement, _ := MainDatabase.Prepare(query)
 	var experience int
-	var password, name string
+	var password, username string
 	if uid != 0 {
-		err = statement.QueryRow(uid).Scan(&uid, &name, &password, &email, &experience)
+		err = statement.QueryRow(uid).Scan(&uid, &username, &password, &email, &experience)
 	} else if email != "" {
-		err = statement.QueryRow(email).Scan(&uid, &name, &password, &email, &experience)
+		err = statement.QueryRow(email).Scan(&uid, &username, &password, &email, &experience)
 	}
 	defer statement.Close()
 	if err != nil && err != sql.ErrNoRows {
@@ -45,7 +45,7 @@ func GetUser(uid int, email string) (*def.User, error) {
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
-	res := &def.User{Uid: uid, Name: name, Password: password, Email: email, Experience: experience}
+	res := &def.User{Uid: uid, Username: username, Password: password, Email: email, Experience: experience}
 
 	return res, nil
 }
