@@ -1,13 +1,14 @@
 package handler
 
 import (
-	"encoding/json"
 	"github.com/CardinalDevLab/Schwi-Backend/database"
 	"github.com/CardinalDevLab/Schwi-Backend/def"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/julienschmidt/httprouter"
 	"io/ioutil"
 	"net/http"
 )
+
 
 func AddPost(w http.ResponseWriter, r *http.Request, p httprouter.Params)  {
 	uid := SessionManager.Get(r.Context(), "uid")
@@ -19,7 +20,7 @@ func AddPost(w http.ResponseWriter, r *http.Request, p httprouter.Params)  {
 	request, _ := ioutil.ReadAll(r.Body)
 	postbody := &def.Post{}
 
-	if err := json.Unmarshal(request, postbody); err != nil {
+	if err := jsoniter.Unmarshal(request, postbody); err != nil {
 		sendMsg(w, 401, "wrong json")
 		return
 	}

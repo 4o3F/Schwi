@@ -3,12 +3,12 @@ package handler
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"github.com/CardinalDevLab/Schwi-Backend/database"
 	"github.com/CardinalDevLab/Schwi-Backend/def"
 	"github.com/CardinalDevLab/Schwi-Backend/utils"
 	"github.com/asarandi/identicon"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/julienschmidt/httprouter"
 	image2 "image"
 	"image/jpeg"
@@ -27,7 +27,7 @@ func Register(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	req, _ := ioutil.ReadAll(r.Body)
 	body := &def.User{}
 
-	if err := json.Unmarshal(req, body); err != nil {
+	if err := jsoniter.Unmarshal(req, body); err != nil {
 		sendMsg(w, 401, "wrong json")
 		return
 	}
@@ -62,7 +62,7 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	request, _ := ioutil.ReadAll(r.Body)
 	body := &def.User{}
 
-	if err := json.Unmarshal(request, body); err != nil {
+	if err := jsoniter.Unmarshal(request, body); err != nil {
 		sendMsg(w, 401, "unmarshal error")
 		return
 	}
@@ -78,7 +78,7 @@ func Login(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		uid := response.Uid
 		experience := response.Experience
 		email := response.Email
-		responseJson, _ := json.Marshal(def.User{Uid: uid, Username: username, Email: email, Experience: experience})
+		responseJson, _ := jsoniter.Marshal(def.User{Uid: uid, Username: username, Email: email, Experience: experience})
 		responseCookie := http.Cookie{Name: "userinfo",
 			Value: base64.StdEncoding.EncodeToString(responseJson),
 			Path: "/",
