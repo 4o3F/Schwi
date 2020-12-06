@@ -33,3 +33,5 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           body: "Action Release"
+          prerelease:  true
+          release_name: $GITHUB_SHA
