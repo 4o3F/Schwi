@@ -25,12 +25,11 @@ jobs:
           name: main
           path: main
       - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: main
-          asset_name: main
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: "Action Release"
-          release_name: ${{ github.sha }}
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            main
