@@ -30,6 +30,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: main
           asset_name: main
-          tag: 1.0
+          tag: ${{ github.ref }}
           overwrite: true
           body: "Action Release"
