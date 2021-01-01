@@ -9,7 +9,9 @@ import (
 	"net/http"
 )
 
-
+var (
+	version = "v1"
+)
 
 func main() {
 	database.InitDatabase()
@@ -17,7 +19,6 @@ func main() {
 	log.SentryInit()
 	handler.InitSession()
 	h := RegisterHandlers()
-
 
 	if database.UseTLS {
 		http.ListenAndServeTLS(":21005", "./data/tls/full_chain.pem", "./data/tls/private.key", handler.SessionManager.LoadAndSave(h))
@@ -28,20 +29,20 @@ func main() {
 
 func RegisterHandlers() http.Handler {
 	router := httprouter.New()
-	router.GET("/apistatus", handler.ApiStatus)
+	router.GET("/"+version+"/apistatus", handler.ApiStatus)
 
-	router.POST("/user/register", handler.Register)
-	router.POST("/user/login", handler.Login)
-	router.GET("/user/getavatar/:uid", handler.GetAvatar)
+	router.POST("/"+version+"/user/register", handler.Register)
+	router.POST("/"+version+"/user/login", handler.Login)
+	router.GET("/"+version+"/user/getavatar/:uid", handler.GetAvatar)
 	//router.GET("/user/logged", handler.Logged)
 
-	router.GET("/video/danmaku/v3/", handler.GetDanmu)
-	router.POST("/video/danmaku/v3", handler.SendDanmu)
+	router.GET("/"+version+"/video/danmu/:vid/get", handler.GetDanmu)
+	router.POST("/"+version+"/video/danmu/:vid/send", handler.SendDanmu)
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: database.CORSDomain,
+		AllowedOrigins:   database.CORSDomain,
 		AllowCredentials: true,
-		Debug: true,
+		Debug:            true,
 	})
 
 	h := c.Handler(router)
